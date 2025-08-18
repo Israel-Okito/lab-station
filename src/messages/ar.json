@@ -1,0 +1,93 @@
+{
+    "navigation": {
+      "dashboard": "لوحة التحكم",
+      "employees": "الموظفون",
+      "pointage": "التوقيت",
+      "revenues": "الإيرادات",
+      "statistics": "الإحصائيات"
+    },
+    "common": {
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "add": "إضافة",
+      "search": "بحث",
+      "filter": "تصفية",
+      "loading": "جاري التحميل...",
+      "today": "اليوم",
+      "week": "الأسبوع",
+      "month": "الشهر",
+      "quarter": "الربع",
+      "year": "السنة",
+      "total": "المجموع",
+      "amount": "المبلغ"
+    },
+    "employees": {
+      "title": "إدارة الموظفين",
+      "addEmployee": "إضافة موظف",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "status": "الحالة",
+      "hireDate": "تاريخ التوظيف",
+      "exitDate": "تاريخ المغادرة",
+      "statuses": {
+        "Actif": "نشط",
+        "Repos": "راحة",
+        "Absent": "غائب", 
+        "Renvoyé": "مفصول",
+        "Mise à pied": "موقوف"
+      },
+      "changeStatus": "تغيير الحالة",
+      "confirmDelete": "هل أنت متأكد من حذف هذا الموظف؟"
+    },
+    "pointage": {
+      "title": "التوقيت اليومي",
+      "employee": "الموظف",
+      "date": "التاريخ",
+      "status": "حالة اليوم",
+      "service": "الخدمة",
+      "amount": "المبلغ المحقق",
+      "services": {
+        "Matin": "صباح",
+        "Soir": "مساء",
+        "Les deux": "كلاهما"
+      },
+      "statuses": {
+        "Présent": "حاضر",
+        "Repos": "راحة",
+        "Absent": "غائب"
+      },
+      "savePointage": "حفظ التوقيت",
+      "locked": "مقفل",
+      "lockedMessage": "توقيتات هذا التاريخ مقفلة."
+    },
+    "revenues": {
+      "title": "إدارة الإيرادات",
+      "addRevenue": "إضافة إيراد",
+      "dailyAmount": "المبلغ اليومي",
+      "weeklyTotal": "المجموع الأسبوعي",
+      "monthlyTotal": "المجموع الشهري",
+      "quarterlyTotal": "المجموع الربعي",
+      "yearlyTotal": "المجموع السنوي"
+    },
+    "statistics": {
+      "title": "الإحصائيات والتحليلات",
+      "employeePayments": "مدفوعات الموظفين",
+      "totalPaid": "إجمالي المدفوع للموظفين",
+      "revenueAnalysis": "تحليل الإيرادات", 
+      "period": "الفترة",
+      "selectEmployee": "اختيار موظف",
+      "allEmployees": "جميع الموظفين"
+    },
+    "dashboard": {
+      "title": "لوحة تحكم LAB STATION",
+      "welcome": "أهلاً وسهلاً",
+      "totalEmployees": "إجمالي الموظفين",
+      "activeEmployees": "الموظفون النشطون",
+      "todayRevenue": "إيرادات اليوم",
+      "weekRevenue": "إيرادات الأسبوع", 
+      "recentPointages": "التوقيتات الأخيرة",
+      "recentRevenues": "الإيرادات الأخيرة"
+    }
+  }

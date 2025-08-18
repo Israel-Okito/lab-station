@@ -1,0 +1,93 @@
+{
+    "navigation": {
+      "dashboard": "Tableau de Bord",
+      "employees": "Employés",
+      "pointage": "Pointage",
+      "revenues": "Revenus",
+      "statistics": "Statistiques"
+    },
+    "common": {
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "add": "Ajouter",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "loading": "Chargement...",
+      "today": "Aujourd'hui",
+      "week": "Semaine",
+      "month": "Mois",
+      "quarter": "Trimestre",
+      "year": "Année",
+      "total": "Total",
+      "amount": "Montant"
+    },
+    "employees": {
+      "title": "Gestion des Employés",
+      "addEmployee": "Ajouter un Employé",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "status": "Statut",
+      "hireDate": "Date d'Embauche",
+      "exitDate": "Date de Sortie",
+      "statuses": {
+        "Actif": "Actif",
+        "Repos": "Repos", 
+        "Absent": "Absent",
+        "Renvoyé": "Renvoyé",
+        "Mise à pied": "Mise à pied"
+      },
+      "changeStatus": "Changer le Statut",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet employé ?"
+    },
+    "pointage": {
+      "title": "Pointage Quotidien",
+      "employee": "Employé",
+      "date": "Date",
+      "status": "Statut du Jour",
+      "service": "Service",
+      "amount": "Montant Réalisé",
+      "services": {
+        "Matin": "Matin",
+        "Soir": "Soir", 
+        "Les deux": "Les deux"
+      },
+      "statuses": {
+        "Présent": "Présent",
+        "Repos": "Repos",
+        "Absent": "Absent"
+      },
+      "savePointage": "Enregistrer le Pointage",
+      "locked": "Verrouillé",
+      "lockedMessage": "Les pointages de cette date sont verrouillés."
+    },
+    "revenues": {
+      "title": "Gestion des Revenus",
+      "addRevenue": "Ajouter un Revenu",
+      "dailyAmount": "Montant Journalier",
+      "weeklyTotal": "Total Hebdomadaire",
+      "monthlyTotal": "Total Mensuel",
+      "quarterlyTotal": "Total Trimestriel",
+      "yearlyTotal": "Total Annuel"
+    },
+    "statistics": {
+      "title": "Statistiques et Analyses",
+      "employeePayments": "Paiements par Employé",
+      "totalPaid": "Total Payé aux Employés",
+      "revenueAnalysis": "Analyse des Revenus",
+      "period": "Période",
+      "selectEmployee": "Sélectionner un Employé",
+      "allEmployees": "Tous les Employés"
+    },
+    "dashboard": {
+      "title": "Tableau de Bord LAB STATION",
+      "welcome": "Bienvenue",
+      "totalEmployees": "Total Employés",
+      "activeEmployees": "Employés Actifs", 
+      "todayRevenue": "Revenus Aujourd'hui",
+      "weekRevenue": "Revenus Semaine",
+      "recentPointages": "Pointages Récents",
+      "recentRevenues": "Revenus Récents"
+    }
+  }
