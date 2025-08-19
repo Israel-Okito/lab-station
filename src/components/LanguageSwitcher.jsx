@@ -21,7 +21,7 @@ export function LanguageSwitcher() {
       variant="outline"
       size="sm"
       onClick={switchLanguage}
-      className="flex items-center gap-2"
+      className="flex items-center w-full gap-2 text-white bg-black"
     >
       <Languages className="w-4 h-4" />
       {locale === 'fr' ? 'العربية' : 'Français'}

@@ -23,17 +23,17 @@ export default async function Layout({
   // }
  
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
-      <body  suppressHydrationWarning={true}>
-      <NextIntlClientProvider>
-          <div className="min-h-screen bg-gray-50">
+    <div lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
+      <div  suppressHydrationWarning={true}>
+        <NextIntlClientProvider>
+          <div className="min-h-screen bg-white">
             <Navigation />
-            <main className="container mx-auto p-4">
+            <main className="lg:ml-64 p-4">
               {children}
             </main>
           </div>
         </NextIntlClientProvider>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }
