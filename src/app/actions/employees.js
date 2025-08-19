@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function createEmployee(data){
-  const supabase = createClient()
+  const supabase =  await createClient()
   try {
     const { data: employee, error } = await supabase
       .from('employes')
@@ -33,6 +33,7 @@ export async function createEmployee(data){
 }
 
 export async function updateEmployee(id, data) {
+  const supabase = await createClient()
   try {
     const { data: employee, error } = await supabase
       .from('employes')
@@ -52,6 +53,7 @@ export async function updateEmployee(id, data) {
 }
 
 export async function changeEmployeeStatus(id, data) {
+  const supabase = await createClient()
   try {
     // Récupérer l'ancien statut
     const { data: currentEmployee } = await supabase
@@ -93,6 +95,7 @@ export async function changeEmployeeStatus(id, data) {
 }
 
 export async function deleteEmployee(id) {
+  const supabase = await createClient()
   try {
     const { error } = await supabase
       .from('employes')

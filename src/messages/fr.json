@@ -39,7 +39,8 @@
         "Mise à pied": "Mise à pied"
       },
       "changeStatus": "Changer le Statut",
-      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet employé ?"
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet employé ?",
+      "search": "Rechercher un employé"
     },
     "pointage": {
       "title": "Pointage Quotidien",
@@ -88,6 +89,7 @@
       "todayRevenue": "Revenus Aujourd'hui",
       "weekRevenue": "Revenus Semaine",
       "recentPointages": "Pointages Récents",
-      "recentRevenues": "Revenus Récents"
+      "recentRevenues": "Revenus Récents",
+      "revenueAnalysis": "Analyse des revenus"
     }
   }

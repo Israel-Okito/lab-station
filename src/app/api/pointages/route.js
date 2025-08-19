@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 
 export async function GET(request) {
-    const supabase = createClient()
+    const supabase =  await createClient()
   try {
     const searchParams = request.nextUrl.searchParams
     const date = searchParams.get('date')

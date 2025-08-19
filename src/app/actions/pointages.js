@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function savePointage(data) {
-  const supabase  = createClient()
+  const supabase  = await createClient()
   try {
     const { data: pointage, error } = await supabase
       .from('pointages')

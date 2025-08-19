@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 
 
 export async function GET() {
-    const supabase = createClient()
+    const supabase = await createClient()
   try {
     // Obtenir les 7 derniers jours
     const dates = Array.from({ length: 7 }, (_, i) => {

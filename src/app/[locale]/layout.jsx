@@ -1,31 +1,31 @@
+import {NextIntlClientProvider, hasLocale} from 'next-intl';
+import {notFound} from 'next/navigation';
+import {routing} from '@/i18n/routing';
+import { Navigation } from '@/components/Navigation';
 
-import { Inter } from 'next/font/google'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import { Navigation } from '@/components/Navigation'
-import "./global.css"
-
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata = {
-  title: 'LAB STATION - Gestion Fast-Food',
-  description: 'Système de gestion pour LAB STATION Tunis',
-}
 
 export function generateStaticParams() {
-  return [{ locale: 'fr' }, { locale: 'ar' }]
+  return routing.locales.map((locale) => ({locale}));
 }
-
-export default async function RootLayout({
+ 
+export default async function Layout({
   children,
-  params: { locale }
+  params
 }) {
-  const messages = await getMessages()
+  const {locale} = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
 
+  // export const metadata = {
+  //   title: 'LAB STATION - Gestion Fast-Food',
+  //   description: 'Système de gestion pour LAB STATION Tunis',
+  // }
+ 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
+      <body  suppressHydrationWarning={true}>
+      <NextIntlClientProvider>
           <div className="min-h-screen bg-gray-50">
             <Navigation />
             <main className="container mx-auto p-4">
@@ -35,5 +35,5 @@ export default async function RootLayout({
         </NextIntlClientProvider>
       </body>
     </html>
-  )
+  );
 }

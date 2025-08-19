@@ -11,6 +11,7 @@ import {
   BarChart3,
 } from 'lucide-react'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { ChefHat } from 'lucide-react'
 
 const navigation = [
   { name: 'dashboard', href: '', icon: LayoutDashboard },
@@ -31,7 +32,8 @@ export function Navigation() {
           <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
               <div className="bg-yellow-500 rounded-lg p-2">
-                <ChefHat className="h-6 w-6 text-primary" />
+                <ChefHat
+                 className="h-6 w-6 text-primary" />
               </div>
               <span className="text-2xl font-bold text-foreground">LAB STATION</span>
             </div>

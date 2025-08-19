@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 
 export async function createRevenue(data) {
 
-  const supabase = createClient()
+  const supabase =  await createClient()
   try {
     const { data: revenue, error } = await supabase
       .from('revenus')
@@ -24,6 +24,7 @@ export async function createRevenue(data) {
 }
 
 export async function updateRevenue(id, data) {
+  const supabase = await createClient()
   try {
     const { data: revenue, error } = await supabase
       .from('revenus')
@@ -43,6 +44,7 @@ export async function updateRevenue(id, data) {
 }
 
 export async function deleteRevenue(id) {
+  const supabase = await createClient()
   try {
     const { error } = await supabase
       .from('revenus')

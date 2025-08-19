@@ -39,7 +39,8 @@
         "Mise à pied": "موقوف"
       },
       "changeStatus": "تغيير الحالة",
-      "confirmDelete": "هل أنت متأكد من حذف هذا الموظف؟"
+      "confirmDelete": "هل أنت متأكد من حذف هذا الموظف؟",
+      "search": "البحث عن موظف"
     },
     "pointage": {
       "title": "التوقيت اليومي",
@@ -88,6 +89,7 @@
       "todayRevenue": "إيرادات اليوم",
       "weekRevenue": "إيرادات الأسبوع", 
       "recentPointages": "التوقيتات الأخيرة",
-      "recentRevenues": "الإيرادات الأخيرة"
+      "recentRevenues": "الإيرادات الأخيرة",
+      "revenueAnalysis": "تحليل الإيرادات"
     }
   }

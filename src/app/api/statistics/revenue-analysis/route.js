@@ -3,7 +3,7 @@ import { startOfWeek, startOfMonth, startOfQuarter, startOfYear, format } from '
 import { createClient } from '@/utils/supabase/server'
 
 export async function GET(request) {
-  const supabase = createClient()
+  const supabase =  await createClient()
   try {
     const searchParams = request.nextUrl.searchParams
     const period = searchParams.get('period') || 'week'
