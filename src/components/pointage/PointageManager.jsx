@@ -4,22 +4,26 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Calendar } from 'lucide-react'
+import { Calendar, Clock, TrendingUp } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { PointageCard } from './PointageCard'
+import { WeeklyPointageManager } from './WeeklyPointageManager'
 import { isToday, isBefore, startOfDay } from 'date-fns'
 
 
 export function PointageManager() {
   const t = useTranslations('pointage')
   const tCommon = useTranslations('common')
+  const [viewMode, setViewMode] = useState('daily') // 'daily' ou 'weekly'
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchEmployeesWithPointages()
-  }, [selectedDate])
+    if (viewMode === 'daily') {
+      fetchEmployeesWithPointages()
+    }
+  }, [selectedDate, viewMode])
 
   const fetchEmployeesWithPointages = async () => {
     setLoading(true)
@@ -44,6 +48,10 @@ export function PointageManager() {
 
   const handlePointageUpdated = () => {
     fetchEmployeesWithPointages()
+  }
+
+  if (viewMode === 'weekly') {
+    return <WeeklyPointageManager />
   }
 
   if (loading) {
@@ -76,6 +84,37 @@ export function PointageManager() {
 
   return (
     <div className="space-y-6">
+      {/* Sélection du mode de vue */}
+      <Card className="lab-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-blue-600" />
+            Mode de Pointage
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-2">
+            <Button
+              variant={viewMode === 'daily' ? 'default' : 'outline'}
+              onClick={() => setViewMode('daily')}
+              className="lab-button"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Pointage Quotidien
+            </Button>
+            <Button
+              variant={viewMode === 'weekly' ? 'default' : 'outline'}
+              onClick={() => setViewMode('weekly')}
+              className="lab-button-outline"
+            >
+              <Clock className="w-4 h-4 mr-2" />
+              Pointage Hebdomadaire
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Sélection de la date (mode quotidien uniquement) */}
       <Card className="lab-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

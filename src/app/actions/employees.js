@@ -111,3 +111,44 @@ export async function deleteEmployee(id) {
     return { success: false, error: 'Erreur lors de la suppression de l\'employé' }
   }
 }
+
+export async function addSalaryAdvance(employeeId, amount, date, description) {
+  const supabase = await createClient()
+  try {
+    const { error } = await supabase
+      .from('avances_salaires')
+      .insert({
+        employe_id: employeeId,
+        montant: amount,
+        date_avance: date,
+        description: description,
+        statut: 'En attente'
+      })
+
+    if (error) throw error
+
+    revalidatePath('/employes')
+    return { success: true }
+  } catch (error) {
+    console.error('Error adding salary advance:', error)
+    return { success: false, error: 'Erreur lors de l\'ajout de l\'avance' }
+  }
+}
+
+export async function getSalaryAdvances(employeeId) {
+  const supabase = await createClient()
+  try {
+    const { data, error } = await supabase
+      .from('avances_salaires')
+      .select('*')
+      .eq('employe_id', employeeId)
+      .order('date_avance', { ascending: false })
+
+    if (error) throw error
+
+    return { success: true, data }
+  } catch (error) {
+    console.error('Error fetching salary advances:', error)
+    return { success: false, error: 'Erreur lors de la récupération des avances' }
+  }
+}

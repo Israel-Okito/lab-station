@@ -1,6 +1,7 @@
 import { DashboardStats } from '@/components/dashboard/DashboardStats'
 import { RecentActivity } from '@/components/dashboard/RecentActivity'
 import { RevenueChart } from '@/components/dashboard/RevenueChart'
+import { EmployeeOfMonth } from '@/components/dashboard/EmployeeOfMonth'
 import { useTranslations } from 'next-intl'
 
 export default function Dashboard() {
@@ -19,6 +20,8 @@ export default function Dashboard() {
         <RevenueChart />
         <RecentActivity />
       </div>
+
+      <EmployeeOfMonth />
     </div>
   )
 }

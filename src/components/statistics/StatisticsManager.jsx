@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl'
 import { EmployeePaymentsChart } from './EmployeePaymentsChart'
 import { RevenueAnalysisChart } from './RevenueAnalysisChart'
 import { EmployeePaymentsTable } from './EmployeePaymentsTable'
+import { SalaryPaymentsChart } from './SalaryPaymentsChart'
+import { TopPerformers } from './TopPerformers'
 
 export function StatisticsManager() {
   const t = useTranslations('statistics')
@@ -84,6 +86,12 @@ export function StatisticsManager() {
           period={selectedPeriod}
         />
       </div>
+
+      {/* Graphiques des salaires payés */}
+      <SalaryPaymentsChart />
+
+      {/* Top performeurs du mois */}
+      <TopPerformers />
 
       {/* Tableau des paiements par employé */}
       <EmployeePaymentsTable 

@@ -48,7 +48,19 @@ export function PointageCard({ employee, selectedDate, isLocked, onPointageUpdat
   }
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    let newFormData = { ...formData, [field]: value }
+    
+    // Si le statut change vers Absent ou Repos, mettre le montant à 0 automatiquement
+    if (field === 'statut_jour' && (value === 'Absent' || value === 'Repos')) {
+      newFormData.montant_realise = 0
+    }
+    
+    // Si le statut change vers Présent et que le montant était à 0, le remettre à la valeur précédente
+    if (field === 'statut_jour' && value === 'Présent' && formData.montant_realise === 0) {
+      newFormData.montant_realise = employee.pointage?.montant_realise || 0
+    }
+    
+    setFormData(newFormData)
   }
 
   const getStatusColor = (status) => {
@@ -129,8 +141,14 @@ export function PointageCard({ employee, selectedDate, isLocked, onPointageUpdat
               value={formData.montant_realise}
               onChange={(e) => handleChange('montant_realise', parseFloat(e.target.value) || 0)}
               placeholder="0.00"
-              disabled={isLocked}
+              disabled={isLocked || formData.statut_jour === 'Absent' || formData.statut_jour === 'Repos'}
+              className={formData.statut_jour === 'Absent' || formData.statut_jour === 'Repos' ? 'bg-gray-100' : ''}
             />
+            {(formData.statut_jour === 'Absent' || formData.statut_jour === 'Repos') && (
+              <p className="text-sm text-gray-500">
+                Le montant est automatiquement mis à 0 pour les absences et repos
+              </p>
+            )}
           </div>
 
           <Button 

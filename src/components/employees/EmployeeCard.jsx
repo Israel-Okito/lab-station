@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Trash2, UserCheck, UserX } from 'lucide-react'
+import { Edit, Trash2, UserCheck, UserX, Eye, TrendingUp } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { format } from 'date-fns'
 import { fr, arDZ } from 'date-fns/locale'
@@ -12,6 +12,9 @@ import { useLocale } from 'next-intl'
 import { EditEmployeeModal } from './EditEmployeeModal'
 import { ChangeStatusModal } from './ChangeStatusModal'
 import { deleteEmployee } from '@/app/actions/employees'
+import { EmployeeAttendanceModal } from './EmployeeAttendanceModal'
+import { SalaryAdvanceModal } from './SalaryAdvanceModal'
+import { DollarSign } from 'lucide-react'
 
 
 export function EmployeeCard({ employee, onEmployeeUpdated }) {
@@ -20,6 +23,8 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
   const locale = useLocale()
   const [showEditModal, setShowEditModal] = useState(false)
   const [showStatusModal, setShowStatusModal] = useState(false)
+  const [showAttendanceModal, setShowAttendanceModal] = useState(false)
+  const [showSalaryAdvanceModal, setShowSalaryAdvanceModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const dateLocale = locale === 'ar' ? arDZ : fr
@@ -102,7 +107,7 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
           </div>
         </CardHeader>
         
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-3">
           <div className="text-sm text-gray-600">
             <strong>{t('hireDate')}:</strong> {' '}
             {format(new Date(employee.date_embauche), 'dd/MM/yyyy', { locale: dateLocale })}
@@ -114,6 +119,28 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
               {format(new Date(employee.date_sortie), 'dd/MM/yyyy', { locale: dateLocale })}
             </div>
           )}
+
+          {/* Boutons d'action */}
+          <div className="pt-2 space-y-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowAttendanceModal(true)}
+              className="w-full lab-button-outline"
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              {tCommon('viewMore')}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowSalaryAdvanceModal(true)}
+              className="w-full lab-button-outline"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              Avances sur Salaire
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -129,6 +156,18 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
         open={showStatusModal}
         onClose={() => setShowStatusModal(false)}
         onStatusChanged={handleStatusChange}
+      />
+
+      <EmployeeAttendanceModal
+        employee={employee}
+        open={showAttendanceModal}
+        onClose={() => setShowAttendanceModal(false)}
+      />
+
+      <SalaryAdvanceModal
+        employee={employee}
+        open={showSalaryAdvanceModal}
+        onClose={() => setShowSalaryAdvanceModal(false)}
       />
     </>
   )

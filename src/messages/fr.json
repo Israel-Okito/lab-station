@@ -21,7 +21,13 @@
       "quarter": "Trimestre",
       "year": "Année",
       "total": "Total",
-      "amount": "Montant"
+      "amount": "Montant",
+      "viewMore": "Voir plus",
+      "close": "Fermer",
+      "confirm": "Confirmer",
+      "back": "Retour",
+      "next": "Suivant",
+      "previous": "Précédent"
     },
     "employees": {
       "title": "Gestion des Employés",
@@ -31,6 +37,7 @@
       "status": "Statut",
       "hireDate": "Date d'Embauche",
       "exitDate": "Date de Sortie",
+      "dailySalary": "Salaire Journalier",
       "statuses": {
         "Actif": "Actif",
         "Repos": "Repos", 
@@ -40,10 +47,20 @@
       },
       "changeStatus": "Changer le Statut",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet employé ?",
-      "search": "Rechercher un employé"
+      "search": "Rechercher un employé",
+      "attendance": "Assiduité",
+      "salary": "Salaire",
+      "performance": "Performance",
+      "employeeOfMonth": "Employé du Mois",
+      "attendanceRate": "Taux d'Assiduité",
+      "presentDays": "Jours Présents",
+      "absentDays": "Jours Absents",
+      "restDays": "Jours de Repos",
+      "totalEarnings": "Gains Totaux"
     },
     "pointage": {
       "title": "Pointage Quotidien",
+      "weeklyTitle": "Pointage Hebdomadaire",
       "employee": "Employé",
       "date": "Date",
       "status": "Statut du Jour",
@@ -61,7 +78,27 @@
       },
       "savePointage": "Enregistrer le Pointage",
       "locked": "Verrouillé",
-      "lockedMessage": "Les pointages de cette date sont verrouillés."
+      "lockedMessage": "Les pointages de cette date sont verrouillés.",
+      "weekSelection": "Sélection de la Semaine",
+      "currentWeek": "Semaine Actuelle",
+      "nextWeek": "Semaine Suivante",
+      "previousWeek": "Semaine Précédente",
+      "weeklyTotals": "Totaux Hebdomadaires",
+      "totalDays": "Total Jours",
+      "totalSalary": "Total Salaire",
+      "markAsPaid": "Marquer comme Payé",
+      "weekPaid": "Semaine Payée",
+      "startNewWeek": "Commencer Nouvelle Semaine",
+      "weeklySummary": "Résumé Hebdomadaire",
+      "attendanceChart": "Graphique d'Assiduité",
+      "salaryChart": "Graphique des Salaires",
+      "paymentStatus": "Statut de Paiement",
+      "paid": "Payé",
+      "unpaid": "Non Payé",
+      "paymentDate": "Date de Paiement",
+      "presentDays": "Jours Présents",
+      "absentDays": "Jours Absents",
+      "restDays": "Jours de Repos"
     },
     "revenues": {
       "title": "Gestion des Revenus",
@@ -79,7 +116,19 @@
       "revenueAnalysis": "Analyse des Revenus",
       "period": "Période",
       "selectEmployee": "Sélectionner un Employé",
-      "allEmployees": "Tous les Employés"
+      "allEmployees": "Tous les Employés",
+      "salaryPayments": "Paiements de Salaires",
+      "attendanceAnalysis": "Analyse d'Assiduité",
+      "employeePerformance": "Performance des Employés",
+      "weeklyStats": "Statistiques Hebdomadaires",
+      "monthlyStats": "Statistiques Mensuelles",
+      "yearlyStats": "Statistiques Annuelles",
+      "topPerformers": "Meilleurs Performeurs",
+      "attendanceRate": "Taux d'Assiduité",
+      "averageSalary": "Salaire Moyen",
+      "totalWorkDays": "Total Jours de Travail",
+      "salaryDistribution": "Distribution des Salaires",
+      "attendanceTrends": "Tendances d'Assiduité"
     },
     "dashboard": {
       "title": "Tableau de Bord LAB STATION",
@@ -90,6 +139,25 @@
       "weekRevenue": "Revenus Semaine",
       "recentPointages": "Pointages Récents",
       "recentRevenues": "Revenus Récents",
-      "revenueAnalysis": "Analyse des revenus"
+      "revenueAnalysis": "Analyse des revenus",
+      "employeeOfMonth": "Employé du Mois",
+      "weeklyOverview": "Vue d'Ensemble Hebdomadaire",
+      "attendanceOverview": "Vue d'Ensemble de l'Assiduité",
+      "salaryOverview": "Vue d'Ensemble des Salaires"
+    },
+    "roles": {
+      "admin": "Administrateur",
+      "manager": "Gérant",
+      "employee": "Employé",
+      "adminOnly": "Administrateur uniquement",
+      "managerAndAdmin": "Gérant et Administrateur"
+    },
+    "permissions": {
+      "canDeleteEmployee": "Peut supprimer un employé",
+      "canEditEmployee": "Peut modifier un employé",
+      "canAddEmployee": "Peut ajouter un employé",
+      "canPointEmployees": "Peut pointer les employés",
+      "canViewStatistics": "Peut voir les statistiques",
+      "canMarkAsPaid": "Peut marquer comme payé"
     }
   }
