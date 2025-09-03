@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Calendar, ChevronLeft, ChevronRight, TrendingUp, DollarSign, Users, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { Calendar, ChevronLeft, ChevronRight, TrendingUp, DollarSign, Users, Clock, CheckCircle, AlertCircle, RefreshCw, ArrowLeft } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { startOfWeek, endOfWeek, addWeeks, format, isSameWeek } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { WeeklyPointageCard } from './WeeklyPointageCard'
 import { WeeklySummaryModal } from './WeeklySummaryModal'
+// import { useSmartDataSync } from '@/hooks/useDataSync'
 
-export function WeeklyPointageManager() {
+export function WeeklyPointageManager({ onBackToDaily }) {
   const t = useTranslations('pointage')
   const tCommon = useTranslations('common')
   const [currentWeekStart, setCurrentWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }))
@@ -38,6 +39,14 @@ export function WeeklyPointageManager() {
       setLoading(false)
     }
   }
+
+  // Fonction pour rafraîchir les données
+  const refreshData = () => {
+    fetchWeeklyPointages()
+  }
+
+  // Synchronisation manuelle des données (plus de rafraîchissement automatique)
+  // const { forceUpdate } = useSmartDataSync(fetchWeeklyPointages, [currentWeekStart])
 
   const goToPreviousWeek = () => {
     setCurrentWeekStart(prev => addWeeks(prev, -1))
@@ -92,8 +101,6 @@ export function WeeklyPointageManager() {
     totals.totalSalary += item.weeklyStats.totalSalary
     totals.totalAmount += item.weeklyStats.totalAmount
     totals.totalAdvances += item.weeklyStats.totalAdvances
-    totals.pendingAdvances += item.weeklyStats.pendingAdvances
-    totals.approvedAdvances += item.weeklyStats.approvedAdvances
     totals.remainingAmount += item.weeklyStats.remainingAmount
     totals.paidEmployees += item.weeklyStats.isWeekPaid ? 1 : 0
     return totals
@@ -105,8 +112,6 @@ export function WeeklyPointageManager() {
     totalSalary: 0,
     totalAmount: 0,
     totalAdvances: 0,
-    pendingAdvances: 0,
-    approvedAdvances: 0,
     remainingAmount: 0,
     paidEmployees: 0
   })
@@ -153,42 +158,63 @@ export function WeeklyPointageManager() {
             {t('weeklyTitle')}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                onClick={goToPreviousWeek}
-                className="lab-button-outline"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </Button>
-              
-              <div className="text-center">
-                <div className="text-lg font-semibold">
-                  Semaine du {format(currentWeekStart, 'dd MMMM yyyy', { locale: fr })} au {format(currentWeekEnd, 'dd MMMM yyyy', { locale: fr })}
-                </div>
-                <div className="text-sm text-gray-600">
-                  {isCurrentWeek ? t('currentWeek') : 'Semaine sélectionnée'}
-                </div>
-              </div>
-              
-              <Button
-                variant="outline"
-                onClick={goToNextWeek}
-                className="lab-button-outline"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            </div>
+                 <CardContent>
+           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+             <div className="flex items-center gap-2">
+               <Button
+                 variant="outline"
+                 onClick={onBackToDaily}
+                 className="lab-button-outline"
+                 title="Retour au pointage quotidien"
+               >
+                 <ArrowLeft className="w-4 h-4 mr-2" />
+                 Retour
+               </Button>
+               <Button
+                 variant="outline"
+                 onClick={goToPreviousWeek}
+                 className="lab-button-outline"
+               >
+                 <ChevronLeft className="w-4 h-4" />
+               </Button>
+               
+               <div className="text-center">
+                 <div className="text-lg font-semibold">
+                   Semaine du {format(currentWeekStart, 'dd MMMM yyyy', { locale: fr })} au {format(currentWeekEnd, 'dd MMMM yyyy', { locale: fr })}
+                 </div>
+                 <div className="text-sm text-gray-600">
+                   {isCurrentWeek ? t('currentWeek') : 'Semaine sélectionnée'}
+                 </div>
+               </div>
+               
+               <Button
+                 variant="outline"
+                 onClick={goToNextWeek}
+                 className="lab-button-outline"
+               >
+                 <ChevronRight className="w-4 h-4" />
+               </Button>
+             </div>
             
-            <Button
-              onClick={goToCurrentWeek}
-              variant="outline"
-              className="lab-button-outline"
-            >
-              {t('currentWeek')}
-            </Button>
+                         <Button
+               onClick={goToCurrentWeek}
+               variant="outline"
+               className="lab-button-outline"
+             >
+               {t('currentWeek')}
+             </Button>
+             <Button
+               onClick={refreshData}
+               variant="outline"
+               className="lab-button-outline"
+               disabled={loading}
+               title="Rafraîchir les données"
+             >
+               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+             </Button>
+                           <div className="text-xs text-gray-500 text-center">
+                Mise à jour manuelle uniquement
+              </div>
           </div>
         </CardContent>
       </Card>
@@ -226,21 +252,11 @@ export function WeeklyPointageManager() {
           </div>
 
           {/* Statistiques des avances */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-3 bg-indigo-50 rounded-lg">
               <DollarSign className="w-6 h-6 text-indigo-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-indigo-600">{weeklyTotals.totalAdvances.toFixed(2)}</div>
               <div className="text-sm text-indigo-600">Total Avances</div>
-            </div>
-            <div className="text-center p-3 bg-yellow-50 rounded-lg">
-              <Clock className="w-6 h-6 text-yellow-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-yellow-600">{weeklyTotals.pendingAdvances.toFixed(2)}</div>
-              <div className="text-sm text-yellow-600">En Attente</div>
-            </div>
-            <div className="text-center p-3 bg-green-50 rounded-lg">
-              <CheckCircle className="w-6 h-6 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-600">{weeklyTotals.approvedAdvances.toFixed(2)}</div>
-              <div className="text-sm text-green-600">Approuvées</div>
             </div>
             <div className="text-center p-3 bg-red-50 rounded-lg">
               <AlertCircle className="w-6 h-6 text-red-600 mx-auto mb-2" />

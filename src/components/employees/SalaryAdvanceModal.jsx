@@ -14,7 +14,7 @@ import { addSalaryAdvance, getSalaryAdvances } from '@/app/actions/employees'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
-export function SalaryAdvanceModal({ employee, open, onClose }) {
+export function SalaryAdvanceModal({ employee, open, onClose, onAdvanceAdded }) {
   const t = useTranslations('employees')
   const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
@@ -64,6 +64,10 @@ export function SalaryAdvanceModal({ employee, open, onClose }) {
         })
         // Recharger les avances
         fetchAdvances()
+        // Notifier le composant parent pour mettre à jour les données
+        if (onAdvanceAdded) {
+          onAdvanceAdded()
+        }
       } else {
         alert(result.error)
       }
@@ -95,8 +99,9 @@ export function SalaryAdvanceModal({ employee, open, onClose }) {
     }
   }
 
-  const totalAdvances = advances.reduce((sum, advance) => sum + advance.montant, 0)
-  const pendingAdvances = advances.filter(a => a.statut === 'En attente').reduce((sum, a) => sum + a.montant, 0)
+  const totalAdvances = advances
+    .filter(a => a.statut === 'Approuvée' || a.statut === 'Payée')
+    .reduce((sum, advance) => sum + advance.montant, 0)
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -115,16 +120,11 @@ export function SalaryAdvanceModal({ employee, open, onClose }) {
               <CardTitle className="text-lg">Résumé des Avances</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <DollarSign className="w-6 h-6 text-blue-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-blue-600">{advances.length}</div>
                   <div className="text-sm text-blue-600">Total Avances</div>
-                </div>
-                <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                  <Clock className="w-6 h-6 text-yellow-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-yellow-600">{pendingAdvances.toFixed(2)}</div>
-                  <div className="text-sm text-yellow-600">En Attente</div>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <CheckCircle className="w-6 h-6 text-green-600 mx-auto mb-2" />

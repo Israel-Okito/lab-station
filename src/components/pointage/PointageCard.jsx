@@ -12,7 +12,7 @@ import { useTranslations } from 'next-intl'
 import { savePointage } from '@/app/actions/pointages'
 
 
-export function PointageCard({ employee, selectedDate, isLocked, onPointageUpdated }) {
+export function PointageCard({ employee, selectedDate, isLocked, onPointageUpdated, onForceSync }) {
   const t = useTranslations('pointage')
   const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
@@ -34,9 +34,13 @@ export function PointageCard({ employee, selectedDate, isLocked, onPointageUpdat
         ...formData
       })
 
-      if (result.success) {
-        onPointageUpdated()
-      } else {
+             if (result.success) {
+         onPointageUpdated()
+         // Déclencher la synchronisation immédiate (manuel uniquement)
+         if (onForceSync) {
+           onForceSync()
+         }
+       } else {
         alert(result.error)
       }
     } catch (error) {

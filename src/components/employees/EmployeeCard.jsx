@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Edit, Trash2, UserCheck, UserX, Eye, TrendingUp } from 'lucide-react'
+import { Edit, Trash2, UserCheck, UserX, Eye, TrendingUp, DollarSign, AlertCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { format } from 'date-fns'
 import { fr, arDZ } from 'date-fns/locale'
@@ -14,7 +14,6 @@ import { ChangeStatusModal } from './ChangeStatusModal'
 import { deleteEmployee } from '@/app/actions/employees'
 import { EmployeeAttendanceModal } from './EmployeeAttendanceModal'
 import { SalaryAdvanceModal } from './SalaryAdvanceModal'
-import { DollarSign } from 'lucide-react'
 
 
 export function EmployeeCard({ employee, onEmployeeUpdated }) {
@@ -26,6 +25,8 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
   const [showAttendanceModal, setShowAttendanceModal] = useState(false)
   const [showSalaryAdvanceModal, setShowSalaryAdvanceModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [weeklyData, setWeeklyData] = useState(null)
+  const [loadingWeekly, setLoadingWeekly] = useState(false)
 
   const dateLocale = locale === 'ar' ? arDZ : fr
 
@@ -63,6 +64,31 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
   const handleStatusChange = () => {
     setShowStatusModal(false)
     onEmployeeUpdated()
+  }
+
+  // Récupérer les données de la semaine en cours
+  const fetchWeeklyData = async () => {
+    setLoadingWeekly(true)
+    try {
+      const response = await fetch(`/api/employees/current-week?employeeId=${employee.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        setWeeklyData(data)
+      }
+    } catch (error) {
+      console.error('Error fetching weekly data:', error)
+    } finally {
+      setLoadingWeekly(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchWeeklyData()
+  }, [employee.id])
+
+  // Fonction pour rafraîchir les données après ajout d'avance
+  const handleAdvanceAdded = () => {
+    fetchWeeklyData()
   }
 
   return (
@@ -113,15 +139,38 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
             {format(new Date(employee.date_embauche), 'dd/MM/yyyy', { locale: dateLocale })}
           </div>
           
-          {employee.date_sortie && (
-            <div className="text-sm text-gray-600">
-              <strong>{t('exitDate')}:</strong> {' '}
-              {format(new Date(employee.date_sortie), 'dd/MM/yyyy', { locale: dateLocale })}
-            </div>
-          )}
+                     {employee.date_sortie && (
+             <div className="text-sm text-gray-600">
+               <strong>{t('exitDate')}:</strong> {' '}
+               {format(new Date(employee.date_sortie), 'dd/MM/yyyy', { locale: dateLocale })}
+             </div>
+           )}
 
-          {/* Boutons d'action */}
-          <div className="pt-2 space-y-2">
+           {/* Résumé de la semaine en cours */}
+           {weeklyData && (
+             <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+               <div className="text-sm font-medium text-gray-700 mb-2">Semaine en cours</div>
+               <div className="grid grid-cols-2 gap-3 text-sm">
+                 <div className="text-center p-2 bg-blue-50 rounded">
+                   <div className="font-bold text-blue-600">{weeklyData.weeklyStats?.totalAmount?.toFixed(2) || '0.00'}</div>
+                   <div className="text-xs text-blue-600">Réalisé</div>
+                 </div>
+                 <div className="text-center p-2 bg-purple-50 rounded">
+                   <div className="font-bold text-purple-600">{weeklyData.weeklyStats?.totalAdvances?.toFixed(2) || '0.00'}</div>
+                   <div className="text-xs text-purple-600">Avances</div>
+                 </div>
+               </div>
+               <div className="mt-2 text-center">
+                 <div className={`text-lg font-bold ${weeklyData.weeklyStats?.remainingAmount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                   {weeklyData.weeklyStats?.remainingAmount?.toFixed(2) || '0.00'} DT
+                 </div>
+                 <div className="text-xs text-gray-600">Reste à payer</div>
+               </div>
+             </div>
+           )}
+
+           {/* Boutons d'action */}
+           <div className="pt-2 space-y-2">
             <Button
               variant="outline"
               size="sm"
@@ -164,11 +213,12 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
         onClose={() => setShowAttendanceModal(false)}
       />
 
-      <SalaryAdvanceModal
-        employee={employee}
-        open={showSalaryAdvanceModal}
-        onClose={() => setShowSalaryAdvanceModal(false)}
-      />
+             <SalaryAdvanceModal
+         employee={employee}
+         open={showSalaryAdvanceModal}
+         onClose={() => setShowSalaryAdvanceModal(false)}
+         onAdvanceAdded={handleAdvanceAdded}
+       />
     </>
   )
 }

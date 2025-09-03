@@ -59,13 +59,13 @@ export async function GET(request) {
       const totalAmount = employeePointages.reduce((sum, p) => sum + (p.montant_realise || 0), 0)
       const totalSalary = presentDays * (employee.salaire_jour || 0)
       
-      // Calculer les totaux des avances
-      const totalAdvances = employeeAvances.reduce((sum, a) => sum + a.montant, 0)
-      const pendingAdvances = employeeAvances.filter(a => a.statut === 'En attente').reduce((sum, a) => sum + a.montant, 0)
-      const approvedAdvances = employeeAvances.filter(a => a.statut === 'Approuvée').reduce((sum, a) => sum + a.montant, 0)
+      // Calculer les totaux des avances (seulement approuvées et payées)
+      const totalAdvances = employeeAvances
+        .filter(a => a.statut === 'Approuvée' || a.statut === 'Payée')
+        .reduce((sum, a) => sum + a.montant, 0)
       
-      // Calculer le montant restant à payer
-      const remainingAmount = totalSalary - totalAdvances
+      // Calculer le montant restant à payer (Montant réalisé - Total avances)
+      const remainingAmount = totalAmount - totalAdvances
       
       // Vérifier si la semaine est payée
       const isWeekPaid = employeePointages.length > 0 && employeePointages.every(p => p.paye)
@@ -82,8 +82,6 @@ export async function GET(request) {
           totalAmount,
           totalSalary,
           totalAdvances,
-          pendingAdvances,
-          approvedAdvances,
           remainingAmount,
           isWeekPaid
         }

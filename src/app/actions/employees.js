@@ -117,17 +117,18 @@ export async function addSalaryAdvance(employeeId, amount, date, description) {
   try {
     const { error } = await supabase
       .from('avances_salaires')
-      .insert({
-        employe_id: employeeId,
-        montant: amount,
-        date_avance: date,
-        description: description,
-        statut: 'En attente'
-      })
+              .insert({
+          employe_id: employeeId,
+          montant: amount,
+          date_avance: date,
+          description: description,
+          statut: 'Approuvée'
+        })
 
     if (error) throw error
 
     revalidatePath('/employes')
+    revalidatePath('/pointage')
     return { success: true }
   } catch (error) {
     console.error('Error adding salary advance:', error)

@@ -16,7 +16,7 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
   const [loading, setLoading] = useState(false)
   
   const { employe, pointages, avances, weeklyStats } = data
-  const { totalDays, presentDays, absentDays, restDays, totalAmount, totalSalary, totalAdvances, pendingAdvances, approvedAdvances, remainingAmount, isWeekPaid } = weeklyStats
+  const { totalDays, presentDays, absentDays, restDays, totalAmount, totalSalary, totalAdvances, remainingAmount, isWeekPaid } = weeklyStats
 
   const handleMarkAsPaid = async () => {
     setLoading(true)
@@ -150,12 +150,8 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
             <span className="font-medium">{totalAdvances.toFixed(2)} DT</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Avances en attente:</span>
-            <span className="font-medium">{pendingAdvances.toFixed(2)} DT</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Avances approuvées:</span>
-            <span className="font-medium">{approvedAdvances.toFixed(2)} DT</span>
+            <span className="text-gray-600">Total avances approuvées:</span>
+            <span className="font-medium">{totalAdvances.toFixed(2)} DT</span>
           </div>
           <div className="flex justify-between border-t pt-2">
             <span className="text-gray-800 font-semibold">Reste à payer:</span>

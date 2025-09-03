@@ -50,8 +50,13 @@ export function PointageManager() {
     fetchEmployeesWithPointages()
   }
 
+  // Fonction pour forcer la synchronisation des données (manuel uniquement)
+  const forceSync = () => {
+    fetchEmployeesWithPointages()
+  }
+
   if (viewMode === 'weekly') {
-    return <WeeklyPointageManager />
+    return <WeeklyPointageManager onBackToDaily={() => setViewMode('daily')} />
   }
 
   if (loading) {
@@ -148,6 +153,7 @@ export function PointageManager() {
             selectedDate={selectedDate}
             isLocked={isDateLocked()}
             onPointageUpdated={handlePointageUpdated}
+            onForceSync={forceSync}
           />
         ))}
       </div>
