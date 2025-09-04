@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { startOfWeek, startOfMonth, startOfYear, endOfWeek, endOfMonth, endOfYear, format, eachWeekOfInterval, eachMonthOfInterval, eachYearOfInterval } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 export async function GET(request) {
   const supabase = await createClient()
@@ -81,7 +82,7 @@ export async function GET(request) {
           const monthKey = format(monthStart, 'yyyy-MM')
           groupedData[monthKey] = {
             period: monthKey,
-            label: format(monthStart, 'MMMM yyyy', { locale: require('date-fns/locale/fr') }),
+            label: format(monthStart, 'MMMM yyyy', { locale: fr }),
             totalSalary: 0,
             totalAmount: 0,
             employeeCount: 0,

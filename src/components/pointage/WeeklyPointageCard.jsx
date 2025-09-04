@@ -5,16 +5,17 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { Calendar, DollarSign, Clock, TrendingUp, CheckCircle, XCircle, AlertCircle, Eye, Lock } from 'lucide-react'
+import { Clock, CheckCircle, XCircle, AlertCircle, Eye, Lock } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { format, isSameDay } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { isSameDay } from 'date-fns'
+import { useUser } from '@/lib/UserContext'
 
 export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummary }) {
   const t = useTranslations('pointage')
   const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
-  
+  const { role: userRole } = useUser()
+
   const { employe, pointages, avances, weeklyStats } = data
   const { totalDays, presentDays, absentDays, restDays, totalAmount, totalSalary, totalAdvances, remainingAmount, isWeekPaid } = weeklyStats
 
@@ -43,14 +44,14 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
     }
   }
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Présent': return 'bg-green-100 text-green-800'
-      case 'Repos': return 'bg-blue-100 text-blue-800'
-      case 'Absent': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
-    }
-  }
+  // const getStatusColor = (status) => {
+  //   switch (status) {
+  //     case 'Présent': return 'bg-green-100 text-green-800'
+  //     case 'Repos': return 'bg-blue-100 text-blue-800'
+  //     case 'Absent': return 'bg-red-100 text-red-800'
+  //     default: return 'bg-gray-100 text-gray-800'
+  //   }
+  // }
 
   const attendanceRate = totalDays > 0 ? (presentDays / totalDays) * 100 : 0
 
@@ -91,15 +92,17 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
           </div>
           <div className="text-center p-3 bg-green-50 rounded-lg">
             <div className="text-2xl font-bold text-green-600">{totalSalary.toFixed(2)}</div>
-            <div className="text-sm text-green-600">Salaire</div>
-          </div>
-          <div className="text-center p-3 bg-orange-50 rounded-lg">
-            <div className="text-2xl font-bold text-orange-600">{totalAmount.toFixed(2)}</div>
-            <div className="text-sm text-orange-600">Réalisé</div>
+            <div className="text-sm text-green-600">Salaire (Réalisé)</div>
           </div>
           <div className="text-center p-3 bg-purple-50 rounded-lg">
             <div className="text-2xl font-bold text-purple-600">{totalAdvances.toFixed(2)}</div>
             <div className="text-sm text-purple-600">Avances</div>
+          </div>
+          <div className="text-center p-3 bg-orange-50 rounded-lg">
+            <div className={`text-2xl font-bold ${remainingAmount >= 0 ? 'text-orange-600' : 'text-red-600'}`}>
+              {remainingAmount.toFixed(2)}
+            </div>
+            <div className="text-sm text-orange-600">Reste à Payer</div>
           </div>
         </div>
 
@@ -149,10 +152,6 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
             <span className="text-gray-600">Total avances:</span>
             <span className="font-medium">{totalAdvances.toFixed(2)} DT</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Total avances approuvées:</span>
-            <span className="font-medium">{totalAdvances.toFixed(2)} DT</span>
-          </div>
           <div className="flex justify-between border-t pt-2">
             <span className="text-gray-800 font-semibold">Reste à payer:</span>
             <span className={`font-bold ${remainingAmount >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -161,8 +160,8 @@ export function WeeklyPointageCard({ data, weekStart, onMarkAsPaid, onViewSummar
           </div>
         </div>
 
-        {/* Bouton d'action */}
-        {!isWeekPaid && (
+        {/* Bouton d'action - Seulement pour les admins */}
+        {!isWeekPaid && userRole === 'admin' && (
           <Button
             onClick={handleMarkAsPaid}
             disabled={loading || totalDays === 0}

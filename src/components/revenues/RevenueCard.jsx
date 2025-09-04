@@ -9,11 +9,13 @@ import { fr, arDZ } from 'date-fns/locale'
 import { useLocale } from 'next-intl'
 import { deleteRevenue } from '@/app/actions/revenues'
 import { EditRevenueModal } from './EditRevenueModal'
+import { useUser } from '@/lib/UserContext'
 
 export function RevenueCard({ revenue, onRevenueUpdated }) {
   const locale = useLocale()
   const [showEditModal, setShowEditModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const { role: userRole } = useUser()
 
   const dateLocale = locale === 'ar' ? arDZ : fr
 
@@ -45,24 +47,28 @@ export function RevenueCard({ revenue, onRevenueUpdated }) {
             <div className="text-lg font-bold text-green-600">
               {revenue.montant_jour.toFixed(2)} DT
             </div>
-            <div className="flex gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowEditModal(true)}
-                disabled={isDeleting}
-              >
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDelete}
-                disabled={isDeleting}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
+            {/* Boutons d'action - Seulement pour les admins */}
+            {userRole === 'admin' && (
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowEditModal(true)}
+                  disabled={isDeleting}
+                >
+                  <Edit className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="text-red-600"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
           </div>
           
           <div className="text-sm text-gray-600">

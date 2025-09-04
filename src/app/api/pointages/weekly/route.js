@@ -57,7 +57,10 @@ export async function GET(request) {
       const absentDays = employeePointages.filter(p => p.statut_jour === 'Absent').length
       const restDays = employeePointages.filter(p => p.statut_jour === 'Repos').length
       const totalAmount = employeePointages.reduce((sum, p) => sum + (p.montant_realise || 0), 0)
-      const totalSalary = presentDays * (employee.salaire_jour || 0)
+      
+      // Le salaire est basé sur le montant réalisé, pas sur un salaire fixe
+      // totalSalary = totalAmount (montant réalisé)
+      const totalSalary = totalAmount
       
       // Calculer les totaux des avances (seulement approuvées et payées)
       const totalAdvances = employeeAvances

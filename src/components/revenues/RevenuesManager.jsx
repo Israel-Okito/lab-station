@@ -8,12 +8,14 @@ import { useTranslations } from 'next-intl'
 import { RevenueCard } from './RevenueCard'
 import { AddRevenueModal } from './AddRevenueModal'
 import { RevenueStats } from './RevenueStats'
+import { useUser } from '@/lib/UserContext'
 
 export function RevenuesManager() {
   const t = useTranslations('revenues')
   const [revenues, setRevenues] = useState([])
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const { role: userRole } = useUser()
 
   useEffect(() => {
     fetchRevenues()
@@ -68,13 +70,16 @@ export function RevenuesManager() {
       <Card className="lab-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Revenus Journaliers</CardTitle>
-          <Button 
-            onClick={() => setShowAddModal(true)}
-            className="lab-button"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            {t('addRevenue')}
-          </Button>
+          {/* Bouton Ajouter - Seulement pour les admins */}
+          {userRole === 'admin' && (
+            <Button 
+              onClick={() => setShowAddModal(true)}
+              className="lab-button"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              {t('addRevenue')}
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -9,8 +9,29 @@ const supabase = createClient();
  */
 export const captureUserDetails = async () => {
   try {
-    // Récupérer l'utilisateur courant
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // Vérifier d'abord le localStorage pour un accès rapide
+    const cachedUserData = localStorage.getItem('userData');
+    if (cachedUserData) {
+      try {
+        const parsed = JSON.parse(cachedUserData);
+        // Si on a des données en cache, on peut les utiliser temporairement
+        // tout en vérifiant en arrière-plan
+        console.log('Utilisation des données utilisateur en cache');
+      } catch (e) {
+        // Ignorer les erreurs de parsing
+      }
+    }
+
+    // Récupérer l'utilisateur courant avec un timeout
+    const getUserPromise = supabase.auth.getUser();
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Auth timeout')), 3000)
+    );
+
+    const { data: { user }, error: userError } = await Promise.race([
+      getUserPromise,
+      timeoutPromise
+    ]);
 
     if (userError) {
       // Si l'erreur est AuthSessionMissingError, c'est normal après une déconnexion
@@ -27,12 +48,21 @@ export const captureUserDetails = async () => {
       return null;
     }
 
-    // Récupérer les infos depuis la table "users"
-    const { data: userDetails, error: profileError } = await supabase
+    // Récupérer les infos depuis la table "users" avec un timeout
+    const profilePromise = supabase
       .from('users')
       .select('id, role, nom, email, is_active') 
       .eq('id', user.id)
       .single();
+
+    const profileTimeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Profile timeout')), 3000)
+    );
+
+    const { data: userDetails, error: profileError } = await Promise.race([
+      profilePromise,
+      profileTimeoutPromise
+    ]);
 
     if (profileError) {
       console.error('Erreur lors de la récupération des détails utilisateur:', profileError);
@@ -43,6 +73,8 @@ export const captureUserDetails = async () => {
   } catch (error) {
     if (error instanceof AuthSessionMissingError) {
       console.log('Session terminée, utilisateur déconnecté');
+    } else if (error.message === 'Auth timeout' || error.message === 'Profile timeout') {
+      console.warn('Timeout lors de la récupération des données utilisateur');
     } else {
       console.error('Erreur inattendue lors de la récupération des détails utilisateur:', error);
     }

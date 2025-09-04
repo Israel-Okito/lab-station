@@ -22,7 +22,53 @@ export function UserProvider({ children }) {
   const fetchUser = async () => {
     try {
       setIsLoading(true);
-      const userDetails = await captureUserDetails();
+      
+      // Vérifier d'abord le localStorage pour un accès rapide
+      const cachedUserData = localStorage.getItem('userData');
+      if (cachedUserData) {
+        try {
+          const parsed = JSON.parse(cachedUserData);
+          console.log('Utilisation des données utilisateur en cache pour un affichage rapide');
+          
+          // Afficher immédiatement les données en cache
+          setUserData(parsed);
+          setError(null);
+          setIsLoading(false);
+          
+          // Puis vérifier en arrière-plan
+          setTimeout(async () => {
+            try {
+              const userDetails = await captureUserDetails();
+              if (userDetails) {
+                const formatted = {
+                  user: {
+                    id: userDetails.id,
+                    email: userDetails.email,
+                    nom: userDetails.nom,
+                  },
+                  role: userDetails.role,
+                };
+                setUserData(formatted);
+              }
+            } catch (e) {
+              console.warn('Erreur lors de la vérification en arrière-plan:', e);
+            }
+          }, 100);
+          
+          return;
+        } catch (e) {
+          console.warn('Erreur lors du parsing des données en cache:', e);
+        }
+      }
+      
+      // Timeout pour éviter que le chargement prenne trop de temps
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout')), 5000)
+      );
+      
+      const userDetailsPromise = captureUserDetails();
+      
+      const userDetails = await Promise.race([userDetailsPromise, timeoutPromise]);
       
       if (userDetails) {
         const formatted = {

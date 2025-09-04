@@ -61,6 +61,7 @@ export function EditEmployeeModal({ employee, open, onClose, onEmployeeUpdated }
                 onChange={(e) => handleChange('prenom', e.target.value)}
                 placeholder={t('firstName')}
                 required
+                disabled
               />
             </div>
             <div className="space-y-2">
@@ -83,6 +84,7 @@ export function EditEmployeeModal({ employee, open, onClose, onEmployeeUpdated }
               value={formData.date_embauche}
               onChange={(e) => handleChange('date_embauche', e.target.value)}
               required
+              disabled
             />
           </div>
 

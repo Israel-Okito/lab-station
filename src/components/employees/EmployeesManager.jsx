@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { EmployeeCard } from './EmployeeCard'
 import { AddEmployeeModal } from './AddEmployeeModal'
 import { useTranslations } from 'next-intl'
+import { useUser } from '@/lib/UserContext'
 
 export function EmployeesManager() {
   const t = useTranslations('employees')
@@ -15,6 +16,7 @@ export function EmployeesManager() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
+  const { role: userRole } = useUser()
 
   useEffect(() => {
     fetchEmployees()
@@ -84,13 +86,16 @@ export function EmployeesManager() {
           />
         </div>
         
-        <Button 
-          onClick={() => setShowAddModal(true)}
-          className="lab-button"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          {t('addEmployee')}
-        </Button>
+        {/* Bouton Ajouter - Seulement pour les admins */}
+        {userRole === 'admin' && (
+          <Button 
+            onClick={() => setShowAddModal(true)}
+            className="lab-button"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            {t('addEmployee')}
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

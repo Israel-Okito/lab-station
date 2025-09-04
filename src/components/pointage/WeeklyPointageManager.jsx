@@ -160,8 +160,7 @@ export function WeeklyPointageManager({ onBackToDaily }) {
         </CardHeader>
                  <CardContent>
            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-             <div className="flex items-center gap-2">
-               <Button
+           <Button
                  variant="outline"
                  onClick={onBackToDaily}
                  className="lab-button-outline"
@@ -170,6 +169,8 @@ export function WeeklyPointageManager({ onBackToDaily }) {
                  <ArrowLeft className="w-4 h-4 mr-2" />
                  Retour
                </Button>
+             <div className="flex items-center gap-2">
+         
                <Button
                  variant="outline"
                  onClick={goToPreviousWeek}
@@ -180,7 +181,7 @@ export function WeeklyPointageManager({ onBackToDaily }) {
                
                <div className="text-center">
                  <div className="text-lg font-semibold">
-                   Semaine du {format(currentWeekStart, 'dd MMMM yyyy', { locale: fr })} au {format(currentWeekEnd, 'dd MMMM yyyy', { locale: fr })}
+                   Semaine du {format(currentWeekStart, 'dd/MM/yyyy', { locale: fr })} au {format(currentWeekEnd, 'dd/MM/yyyy', { locale: fr })}
                  </div>
                  <div className="text-sm text-gray-600">
                    {isCurrentWeek ? t('currentWeek') : 'Semaine sélectionnée'}
@@ -242,7 +243,7 @@ export function WeeklyPointageManager({ onBackToDaily }) {
             <div className="text-center p-3 bg-yellow-50 rounded-lg">
               <DollarSign className="w-6 h-6 text-yellow-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-yellow-600">{weeklyTotals.totalSalary.toFixed(2)}</div>
-              <div className="text-sm text-yellow-600">Total Salaires</div>
+              <div className="text-sm text-yellow-600">Total Réalisé</div>
             </div>
             <div className="text-center p-3 bg-purple-50 rounded-lg">
               <Clock className="w-6 h-6 text-purple-600 mx-auto mb-2" />

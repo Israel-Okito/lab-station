@@ -60,6 +60,7 @@ export function EditRevenueModal({ revenue, open, onClose, onRevenueUpdated }) {
               value={formData.date}
               onChange={(e) => handleChange('date', e.target.value)}
               required
+              disabled
             />
           </div>
 

@@ -22,6 +22,8 @@ export function WeeklySummaryModal({ open, onClose, weekData, weekStart }) {
     totals.totalDays += item.weeklyStats.totalDays
     totals.totalAmount += item.weeklyStats.totalAmount
     totals.totalSalary += item.weeklyStats.totalSalary
+    totals.totalAdvances += item.weeklyStats.totalAdvances
+    totals.remainingAmount += item.weeklyStats.remainingAmount
     totals.presentEmployees += item.weeklyStats.presentDays > 0 ? 1 : 0
     totals.paidEmployees += item.weeklyStats.isWeekPaid ? 1 : 0
     totals.totalPresentDays += item.weeklyStats.presentDays
@@ -32,6 +34,8 @@ export function WeeklySummaryModal({ open, onClose, weekData, weekStart }) {
     totalDays: 0,
     totalAmount: 0,
     totalSalary: 0,
+    totalAdvances: 0,
+    remainingAmount: 0,
     presentEmployees: 0,
     paidEmployees: 0,
     totalPresentDays: 0,
@@ -62,22 +66,26 @@ export function WeeklySummaryModal({ open, onClose, weekData, weekStart }) {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                   <div className="text-2xl font-bold text-blue-600">{globalStats.totalDays}</div>
                   <div className="text-sm text-blue-600">Total Jours</div>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-lg">
                   <div className="text-2xl font-bold text-green-600">{globalStats.totalSalary.toFixed(2)}</div>
-                  <div className="text-sm text-green-600">Total Salaires</div>
-                </div>
-                <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                  <div className="text-2xl font-bold text-yellow-600">{globalStats.totalAmount.toFixed(2)}</div>
-                  <div className="text-sm text-yellow-600">Total Réalisé</div>
+                  <div className="text-sm text-green-600">Total Réalisé</div>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{globalStats.presentEmployees}</div>
-                  <div className="text-sm text-purple-600">Employés Présents</div>
+                  <div className="text-2xl font-bold text-purple-600">{globalStats.totalAdvances.toFixed(2)}</div>
+                  <div className="text-sm text-purple-600">Total Avances</div>
+                </div>
+                <div className="text-center p-3 bg-orange-50 rounded-lg">
+                  <div className="text-2xl font-bold text-orange-600">{globalStats.remainingAmount.toFixed(2)}</div>
+                  <div className="text-sm text-orange-600">Reste à Payer</div>
+                </div>
+                <div className="text-center p-3 bg-indigo-50 rounded-lg">
+                  <div className="text-2xl font-bold text-indigo-600">{globalStats.presentEmployees}</div>
+                  <div className="text-sm text-indigo-600">Employés Présents</div>
                 </div>
               </div>
             </CardContent>
@@ -147,7 +155,7 @@ export function WeeklySummaryModal({ open, onClose, weekData, weekStart }) {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                         <div className="text-center">
                           <div className="font-semibold text-blue-600">{weeklyStats.presentDays}</div>
                           <div className="text-gray-600">Présent</div>
@@ -158,11 +166,17 @@ export function WeeklySummaryModal({ open, onClose, weekData, weekStart }) {
                         </div>
                         <div className="text-center">
                           <div className="font-semibold text-green-600">{weeklyStats.totalSalary.toFixed(2)}</div>
-                          <div className="text-gray-600">Salaire</div>
+                          <div className="text-gray-600">Réalisé</div>
                         </div>
                         <div className="text-center">
-                          <div className="font-semibold text-yellow-600">{weeklyStats.totalAmount.toFixed(2)}</div>
-                          <div className="text-gray-600">Réalisé</div>
+                          <div className="font-semibold text-purple-600">{weeklyStats.totalAdvances.toFixed(2)}</div>
+                          <div className="text-gray-600">Avances</div>
+                        </div>
+                        <div className="text-center">
+                          <div className={`font-semibold ${weeklyStats.remainingAmount >= 0 ? 'text-orange-600' : 'text-red-600'}`}>
+                            {weeklyStats.remainingAmount.toFixed(2)}
+                          </div>
+                          <div className="text-gray-600">Reste à Payer</div>
                         </div>
                       </div>
                     </div>

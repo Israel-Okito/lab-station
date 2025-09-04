@@ -14,6 +14,7 @@ import { ChangeStatusModal } from './ChangeStatusModal'
 import { deleteEmployee } from '@/app/actions/employees'
 import { EmployeeAttendanceModal } from './EmployeeAttendanceModal'
 import { SalaryAdvanceModal } from './SalaryAdvanceModal'
+import { useUser } from '@/lib/UserContext'
 
 
 export function EmployeeCard({ employee, onEmployeeUpdated }) {
@@ -27,6 +28,7 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [weeklyData, setWeeklyData] = useState(null)
   const [loadingWeekly, setLoadingWeekly] = useState(false)
+  const { role: userRole } = useUser()
 
   const dateLocale = locale === 'ar' ? arDZ : fr
 
@@ -104,32 +106,36 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
                 {t(`statuses.${employee.statut}`)}
               </Badge>
             </div>
-            <div className="flex gap-1">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowEditModal(true)}
-                disabled={isDeleting}
-              >
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowStatusModal(true)}
-                disabled={isDeleting}
-              >
-                <UserCheck className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDelete}
-                disabled={isDeleting}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
+            {/* Boutons d'action - Seulement pour les admins */}
+            {userRole === 'admin' && (
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowEditModal(true)}
+                  disabled={isDeleting}
+                >
+                  <Edit className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowStatusModal(true)}
+                  disabled={isDeleting}
+                >
+                  <UserCheck className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="text-red-600"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
           </div>
         </CardHeader>
         
@@ -180,15 +186,18 @@ export function EmployeeCard({ employee, onEmployeeUpdated }) {
               <Eye className="w-4 h-4 mr-2" />
               {tCommon('viewMore')}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowSalaryAdvanceModal(true)}
-              className="w-full lab-button-outline"
-            >
-              <DollarSign className="w-4 h-4 mr-2" />
-              Avances sur Salaire
-            </Button>
+            {/* Bouton Avances sur Salaire - Seulement pour les admins */}
+            {userRole === 'admin' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowSalaryAdvanceModal(true)}
+                className="w-full lab-button-outline"
+              >
+                <DollarSign className="w-4 h-4 mr-2" />
+                Avances sur Salaire
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

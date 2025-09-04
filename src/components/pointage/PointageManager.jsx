@@ -98,7 +98,7 @@ export function PointageManager() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Button
               variant={viewMode === 'daily' ? 'default' : 'outline'}
               onClick={() => setViewMode('daily')}
