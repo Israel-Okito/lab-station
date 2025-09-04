@@ -87,7 +87,7 @@ useEffect(() => {
   const filteredUsers = users.filter(user => {
 
     if (hiddenEmails.includes(user.email)) {
-      return true;
+      return false
     }
 
     if (!searchTerm) return true;
