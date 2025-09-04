@@ -15,7 +15,11 @@ export function RevenueChart() {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const response = await fetch('/api/dashboard/chart-data')
+        const response = await fetch('/api/dashboard/chart-data', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         if (response.ok) {
           const data = await response.json()
           setChartData(data)

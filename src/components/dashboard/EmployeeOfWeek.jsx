@@ -18,7 +18,9 @@ export function EmployeeOfWeek() {
 
   const fetchEmployeeOfWeek = async () => {
     try {
-      const response = await fetch('/api/statistics/employee-of-week')
+      const response = await fetch('/api/statistics/employee-of-week', {
+        headers: { 'Content-Type': 'application/json' },
+      })
       if (response.ok) {
         const data = await response.json()
         setEmployeeOfWeek(data.employeeOfTheWeek)

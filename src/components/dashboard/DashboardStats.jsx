@@ -20,7 +20,11 @@ export function DashboardStats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/dashboard/stats')
+        const response = await fetch('/api/dashboard/stats', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         if (response.ok) {
           const data = await response.json()
           setStats(data)

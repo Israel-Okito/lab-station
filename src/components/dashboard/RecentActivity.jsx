@@ -21,8 +21,12 @@ export function RecentActivity() {
     const fetchRecentActivity = async () => {
       try {
         const [pointagesRes, revenuesRes] = await Promise.all([
-          fetch('/api/pointages/recent'),
-          fetch('/api/revenus/recent')
+          fetch('/api/pointages/recent', {
+            headers: { 'Content-Type': 'application/json' },
+          }),
+          fetch('/api/revenus/recent', {
+            headers: { 'Content-Type': 'application/json' },
+          })
         ])
 
         if (pointagesRes.ok) {

@@ -1,7 +1,8 @@
 import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
-import { Navigation } from '@/components/Navigation';
+import { ConditionalLayout } from '@/components/ConditionalLayout';
+import { UserProvider } from '@/lib/UserContext';
 
 
 export function generateStaticParams() {
@@ -24,14 +25,13 @@ export default async function Layout({
  
   return (
     <div lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
-      <div  suppressHydrationWarning={true}>
+      <div suppressHydrationWarning={true}>
         <NextIntlClientProvider>
-          <div className="min-h-screen bg-white">
-            <Navigation />
-            <main className="lg:ml-64 p-4">
+          <UserProvider>
+            <ConditionalLayout>
               {children}
-            </main>
-          </div>
+            </ConditionalLayout>
+          </UserProvider>
         </NextIntlClientProvider>
       </div>
     </div>

@@ -2,11 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
-import { LayoutDashboard, Users, Clock, DollarSign, BarChart3, Menu, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { LayoutDashboard, Users, Clock, DollarSign, BarChart3, Menu, X, LogOut, User, Shield } from "lucide-react"
 import { ChefHat } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { LanguageSwitcher } from "./LanguageSwitcher"
+import { auth, captureUserDetails } from "@/utils/auth"
+import { Settings } from "lucide-react"
 
 const navigation = [
   { name: "Tableau de bord", href: "/", icon: LayoutDashboard },
@@ -14,11 +16,46 @@ const navigation = [
   { name: "Pointage", href: "/pointage", icon: Clock },
   { name: "Revenus", href: "/revenus", icon: DollarSign },
   { name: "Statistiques", href: "/statistiques", icon: BarChart3 },
+  { name: "Paramètres", href: "/utilisateurs", icon: Settings },
 ]
 
 export function Navigation() {
   const pathname = usePathname()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  // Vérifier l'authentification au chargement
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const userDetails = await captureUserDetails()
+        setUser(userDetails)
+      } catch (error) {
+        console.error('Auth check error:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
+
+  // Gérer la déconnexion
+  const handleLogout = async () => {
+    try {
+      await auth.signOut()
+      setUser(null)
+      window.location.href = '/login'
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
+
+  // Si pas d'utilisateur connecté, rediriger vers la connexion
+  if (!loading && !user) {
+    return null
+  }
 
   return (
     <>
@@ -43,7 +80,14 @@ export function Navigation() {
             <div className="bg-yellow-400 rounded-lg p-2">
               <ChefHat className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">LAB STATION</span>
+            <div className="flex-1">
+              <span className="text-xl font-bold text-foreground">LAB STATION</span>
+              {user && (
+                <div className="text-xs text-muted-foreground mt-1">
+                  {user.prenom} {user.nom} ({user.role})
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex-1 py-6">
@@ -74,7 +118,33 @@ export function Navigation() {
 
           <div className="border-t border-border p-4 space-y-4">
             <LanguageSwitcher />
-            <Button className="w-full bg-yellow-400 text-primary-foreground hover:bg-primary/90">Se connecter</Button>
+            
+            {/* Informations utilisateur */}
+            {user && (
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm font-medium text-gray-900">
+                    {user.prenom} {user.nom}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Shield className="w-4 h-4 text-blue-600" />
+                  <span className="text-xs text-blue-600 font-medium uppercase">
+                    {user.role}
+                  </span>
+                </div>
+                <Button 
+                  onClick={handleLogout}
+                  variant="outline" 
+                  size="sm"
+                  className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Se déconnecter
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </nav>

@@ -133,7 +133,8 @@ export function PointageManager() {
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="max-w-xs"
+              className="max-w-xs text-black"
+              disabled={true}
             />
             
             {isDateLocked() && (
